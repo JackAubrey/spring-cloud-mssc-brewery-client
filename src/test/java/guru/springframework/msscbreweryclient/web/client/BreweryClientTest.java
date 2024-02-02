@@ -1,6 +1,7 @@
 package guru.springframework.msscbreweryclient.web.client;
 
 import guru.springframework.msscbreweryclient.web.model.BeerDto;
+import guru.springframework.msscbreweryclient.web.model.CustomerDto;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -58,5 +59,39 @@ class BreweryClientTest {
     @Test
     void deleteBeerById() {
         assertDoesNotThrow( () -> client.deleteBeerById(UUID.randomUUID()) );
+    }
+
+    @Test
+    void getCustomerById() {
+        CustomerDto customerDto = client.getCustomerById(UUID.randomUUID());
+
+        assertNotNull(customerDto);
+    }
+
+    @Test
+    void saveNewCustomer() {
+        CustomerDto customerDto = CustomerDto.builder()
+                .name("Foo Name")
+                .build();
+
+        URI uri = client.saveNewCustomer(customerDto);
+
+        assertNotNull(uri);
+
+        log.info("Saved new Customer V1 location = {}", uri);
+    }
+
+    @Test
+    void updateCustomer() {
+        CustomerDto customerDto = CustomerDto.builder()
+                .name("Update Foo Name")
+                .build();
+
+        client.updateCustomer(UUID.randomUUID(), customerDto);
+    }
+
+    @Test
+    void deleteCustomerById() {
+        client.deleteCustomerById(UUID.randomUUID());
     }
 }
